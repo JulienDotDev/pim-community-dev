@@ -92,9 +92,6 @@ class ChannelUpdater implements ObjectUpdaterInterface
             case 'currencies':
                 $this->setCurrencies($channel, $data);
                 break;
-            case 'label':
-                $channel->setLabel($data);
-                break;
             case 'conversion_units':
                 $channel->setConversionUnits($data);
                 break;

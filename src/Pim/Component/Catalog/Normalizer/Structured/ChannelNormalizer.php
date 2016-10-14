@@ -20,6 +20,21 @@ class ChannelNormalizer implements NormalizerInterface
     protected $supportedFormats = ['json', 'xml'];
 
     /**
+     * @var TranslationNormalizer
+     */
+    protected $transNormalizer;
+
+    /**
+     * Constructor
+     *
+     * @param TranslationNormalizer $transNormalizer
+     */
+    public function __construct(TranslationNormalizer $transNormalizer)
+    {
+        $this->transNormalizer = $transNormalizer;
+    }
+
+    /**
      * {@inheritdoc}
      *
      * @param $object ChannelInterface
@@ -28,12 +43,11 @@ class ChannelNormalizer implements NormalizerInterface
     {
         return [
             'code'             => $object->getCode(),
-            'label'            => $this->normalizeLabel($object),
             'currencies'       => $this->normalizeCurrencies($object),
             'locales'          => $this->normalizeLocales($object),
             'category'         => $this->normalizeCategoryTree($object),
             'conversion_units' => $this->normalizeConversionUnits($object),
-        ];
+        ] + $this->transNormalizer->normalize($object, $format, $context);
     }
 
     /**

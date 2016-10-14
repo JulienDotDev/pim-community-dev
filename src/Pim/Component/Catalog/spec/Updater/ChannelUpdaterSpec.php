@@ -4,8 +4,10 @@ namespace spec\Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\ChannelTranslation;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Model\ChannelTranslationInterface;
 use Pim\Component\Catalog\Model\CurrencyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Prophecy\Argument;
@@ -55,7 +57,10 @@ class ChannelUpdaterSpec extends ObjectBehavior
     ) {
         $values = [
             'code'  => 'ecommerce',
-            'label' => 'Ecommerce',
+            'labels' => [
+                'fr_FR' => 'E-commerce',
+                'en_US' => 'E-commerce',
+            ],
             'locales'    => ['en_US', 'fr_FR'],
             'currencies' => ['EUR', 'USD'],
             'tree'       => 'master_catalog',
@@ -65,7 +70,6 @@ class ChannelUpdaterSpec extends ObjectBehavior
         ];
 
         $channel->setCode('ecommerce')->shouldBeCalled();
-        $channel->setLabel('Ecommerce')->shouldBeCalled();
 
         $categoryRepository->findOneByIdentifier('master_catalog')->willReturn($tree);
         $channel->setCategory($tree)->shouldBeCalled();
@@ -95,7 +99,9 @@ class ChannelUpdaterSpec extends ObjectBehavior
     ) {
         $values = [
             'code'  => 'ecommerce',
-            'label' => 'Ecommerce',
+            'labels' => [
+                'fr_FR' => 'E-commerce',
+            ],
             'locales'    => ['fr_FR'],
             'currencies' => ['EUR'],
             'tree'       => 'unknown',
@@ -118,7 +124,6 @@ class ChannelUpdaterSpec extends ObjectBehavior
     ) {
         $values = [
             'code'  => 'ecommerce',
-            'label' => 'Ecommerce',
             'locales'    => ['unknown'],
             'currencies' => ['EUR'],
             'tree'       => 'tree',
@@ -141,7 +146,9 @@ class ChannelUpdaterSpec extends ObjectBehavior
     ) {
         $values = [
             'code'  => 'ecommerce',
-            'label' => 'Ecommerce',
+            'labels' => [
+                'fr_FR' => 'E-commerce',
+            ],
             'locales'    => ['fr_FR'],
             'currencies' => ['unknown'],
             'tree'       => 'tree',

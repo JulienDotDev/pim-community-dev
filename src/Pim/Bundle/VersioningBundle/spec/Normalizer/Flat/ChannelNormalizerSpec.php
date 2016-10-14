@@ -7,9 +7,15 @@ use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CurrencyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
+use Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer;
 
 class ChannelNormalizerSpec extends ObjectBehavior
 {
+    function let(TranslationNormalizer $transNormalizer)
+    {
+        $this->beConstructedWith($transNormalizer);
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType('Pim\Bundle\VersioningBundle\Normalizer\Flat\ChannelNormalizer');

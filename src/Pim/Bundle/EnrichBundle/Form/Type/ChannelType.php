@@ -99,7 +99,16 @@ class ChannelType extends AbstractType
      */
     protected function addLabelField(FormBuilderInterface $builder)
     {
-        $builder->add('label', 'text', ['label' => 'Default label']);
+        $builder->add(
+            'label',
+            'pim_translatable_field',
+            [
+                'field'             => 'label',
+                'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\ChannelTranslation',
+                'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\Channel',
+                'property_path'     => 'translations'
+            ]
+        );
 
         return $this;
     }

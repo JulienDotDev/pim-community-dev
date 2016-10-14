@@ -62,7 +62,8 @@ parameters:
     pim_catalog.updater.remover.group_field.class:            Pim\Component\Catalog\Updater\Remover\GroupFieldRemover
     pim_catalog.updater.remover.multiselect_value.class:      Pim\Component\Catalog\Updater\Remover\MultiSelectAttributeRemover
 
-    pim_catalog.updater.category_translatable.class: Pim\Component\Catalog\Localization\CategoryUpdater
+    pim_catalog.updater.category_translatable.class:          Pim\Component\Catalog\Localization\CategoryUpdater
+    pim_catalog.updater.channel_translatable.class:           Pim\Component\Catalog\Localization\ChannelUpdater
 
 services:
     # Updaters
@@ -142,6 +143,14 @@ services:
             - '@pim_catalog.repository.category'
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.repository.currency'
+
+    pim_catalog.updater.channel_translatable:
+        decorates: pim_catalog.updater.channel
+        decoration_inner_name: pim_catalog.updater.channel.base
+        class: '%pim_catalog.updater.channel_translatable.class%'
+        arguments:
+            - '@pim_catalog.updater.channel.base'
+            - '@pim_localization.updater.translatable'
 
     pim_catalog.updater.locale:
         class: '%pim_catalog.updater.locale.class%'

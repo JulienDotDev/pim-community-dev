@@ -10,7 +10,7 @@ use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
 /**
  * Channel repository
- * Define a default sort order by label
+ * Define a default sort order by code
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -21,7 +21,7 @@ class ChannelRepository extends EntityRepository implements ChannelRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function findBy(array $criteria, array $orderBy = ['label' => 'ASC'], $limit = null, $offset = null)
+    public function findBy(array $criteria, array $orderBy = ['code' => 'ASC'], $limit = null, $offset = null)
     {
         return parent::findBy($criteria, $orderBy, $limit, $offset);
     }
@@ -29,7 +29,7 @@ class ChannelRepository extends EntityRepository implements ChannelRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function findOneBy(array $criteria, array $orderBy = ['label' => 'ASC'])
+    public function findOneBy(array $criteria, array $orderBy = ['code' => 'ASC'])
     {
         return parent::findOneBy($criteria, $orderBy);
     }
@@ -139,9 +139,10 @@ SQL;
     {
         return $this
             ->createQueryBuilder('ch')
-            ->select('ch, lo, cu')
+            ->select('ch, lo, cu, tr')
             ->leftJoin('ch.locales', 'lo')
             ->leftJoin('ch.currencies', 'cu')
+            ->leftJoin('ch.translations', 'tr')
             ->getQuery()
             ->getResult();
     }
@@ -182,11 +183,11 @@ SQL;
     public function getLabelsIndexedByCode()
     {
         $qb = $this->createQueryBuilder('c');
-        $qb->select('c.code, c.label');
+        $qb->select('c.code');
         $channels = $qb->getQuery()->getArrayResult();
         $choices = [];
         foreach ($channels as $channel) {
-            $choices[$channel['code']] = $channel['label'];
+            $choices[$channel['code']] = $channel['code'];
         }
 
         return $choices;

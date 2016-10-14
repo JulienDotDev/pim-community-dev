@@ -105,6 +105,7 @@ services:
 
     pim_versioning.serializer.normalizer.flat.channel:
         class: '%pim_serializer.normalizer.flat.channel.class%'
+        parent: pim_serializer.normalizer.channel
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 
