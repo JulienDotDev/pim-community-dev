@@ -1,3 +1,13 @@
-<button class="btn btn-primary pull-right icons-holder-text" data-action="prompt-creation" type="button">
-    <i class="icon-plus"></i> <%- buttonTitle %>
-</button>
+<% if (!isMultiple) { %>
+    <div class="btn btn-primary pull-right icons-holder-text">
+        <i class="icon-plus"></i><span data-drop-zone="action-list"></span>
+    </div>
+<% } else if (isMultiple) { %>
+    <div class="btn-group">
+        <div class="btn-primary dropdown-toggle action btn create-button" data-toggle="dropdown">
+            <%- createButtonTitle %>
+        </div>
+
+        <ul class="dropdown-menu right-align" data-drop-zone="action-list"></ul>
+    </div>
+<% } %>
