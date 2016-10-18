@@ -91,7 +91,6 @@ class AttributeNormalizer implements NormalizerInterface
             foreach ($options as $option) {
                 $item = [];
                 foreach ($option->getOptionValues() as $value) {
-                    /* @var ProductValueInterface $value */
                     $label = str_replace('{locale}', $value->getLocale(), self::LOCALIZABLE_PATTERN);
                     $label = str_replace('{value}', $value->getValue(), $label);
                     $item[] = $label;

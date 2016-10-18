@@ -35,23 +35,24 @@ class MetricNormalizer implements NormalizerInterface
 
         $flatMetric = [];
 
-        foreach ($standardMetric as $attribute => $productValues) {
+        foreach ($standardMetric as $attributeCode => $productValues) {
             foreach ($productValues as $metricValue) {
-                $locale = $metricValue['locale'];
-                $scope = $metricValue['scope'];
+                $localeCode = $metricValue['locale'];
+                $channelCode = $metricValue['scope'];
 
                 $attributeLabel = $this->normalizeAttributeLabel(
-                    $attribute,
-                    $scope,
-                    $locale
+                    $attributeCode,
+                    $channelCode,
+                    $localeCode,
+                    $context
                 );
 
                 if (self::MULTIPLE_FIELDS_FORMAT === $context['metric_format']) {
                     $attributeUnit = $this->normalizeAttributeLabel(
-                        $attribute,
-                        $scope,
-                        $locale,
-                        $isUnit = true
+                        $attributeCode,
+                        $channelCode,
+                        $localeCode,
+                        $context
                     );
 
                     $flatMetric[$attributeLabel] = $metricValue['data']['amount'];
@@ -114,19 +115,20 @@ class MetricNormalizer implements NormalizerInterface
     /**
      * Generates the attribute label based on unit, scope, locale and context
      *
-     * @param string $attribute
-     * @param string $scope
-     * @param string $locale
-     * @param bool   $isUnit
+     * @param string $attributeCode
+     * @param string $channelCode
+     * @param string $localeCode
+     * @param array  $context
      *
      * @return string
      */
-    protected function normalizeAttributeLabel($attribute, $scope, $locale, $isUnit = false)
+    protected function normalizeAttributeLabel($attributeCode, $channelCode, $localeCode, array $context)
     {
-        $scopeLabel = null !== $scope ? self::LABEL_SEPARATOR . $scope : '';
-        $localeLabel = null !== $locale ? self::LABEL_SEPARATOR . $locale : '';
-        $unitLabel = false !== $isUnit ? self::LABEL_SEPARATOR . self::UNIT_LABEL : '';
+        $channelLabel = null !== $channelCode ? self::LABEL_SEPARATOR . $channelCode : '';
+        $localeLabel = null !== $localeCode ? self::LABEL_SEPARATOR . $localeCode : '';
+        $unitLabel = self::MULTIPLE_FIELDS_FORMAT !== $context['metric_format'] ?
+            self::LABEL_SEPARATOR . self::UNIT_LABEL : '';
 
-        return $attribute . $unitLabel . $localeLabel . $scopeLabel;
+        return $attributeCode . $unitLabel . $localeLabel . $channelLabel;
     }
 }
